@@ -28,15 +28,13 @@ import javax.sql.DataSource;
 
 /**
  * Servlet implementation class ReadingMail
+ * Reading Kieser data from googlemail
  */
 @WebServlet("/ReadingMail")
 public class ReadingMail extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private String saveDirectory ="/Users/stefan/work/techno/GymView";
-    /*
-	@Resource(lookup = "java:/MySQLDS")
-	private DataSource dataSource;
-	*/
+    
 	private MimeBodyPart mailAttachment ;
 	
     public MimeBodyPart getMailAttachment() {
@@ -68,6 +66,11 @@ public class ReadingMail extends HttpServlet {
 		// if run as a servlet
 	}
 
+	/**
+	 * Read mail from gmail server and store attachment data in a file in the filesystem
+	 * @param dataSource open database connection 
+	 * @return user key of generated user training records in database
+	 */
 	protected int readMail(DataSource dataSource){
 		int userId = -1;
 		Properties props = new Properties();
@@ -133,7 +136,7 @@ public class ReadingMail extends HttpServlet {
             // print out details of each message
             System.out.println("Message #" + (i + 1) + ":");
             System.out.println("\t From: " + from);
-            // man at work -- compute user id from from and users table
+            // compute user id from from and users table
             userId = usergetUserIdFormSender(from, dataSource);
             System.out.println("\t Subject: " + subject);
             System.out.println("\t Sent Date: " + sentDate);
@@ -141,7 +144,8 @@ public class ReadingMail extends HttpServlet {
             System.out.println("\t Attachments: " + attachFiles);
             }
         } catch (Exception mex) {
-            mex.printStackTrace();
+            // mex.printStackTrace();
+        	System.out.println("Can't connect to mail store, no net access!");
         }
         return userId;
 	}
@@ -209,7 +213,7 @@ public class ReadingMail extends HttpServlet {
 				}
 				insertStatement.setString(2, buff.toString());
 			} else {
-				insertStatement.setString(2, "ERROR: no attachemnts found!");
+				insertStatement.setString(2, "ERROR: no attachments found!");
 			}
 
 			insertStatement.executeUpdate();

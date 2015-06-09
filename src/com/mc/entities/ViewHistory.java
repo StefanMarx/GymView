@@ -1,17 +1,12 @@
 package com.mc.entities;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.ResultSet;
-import java.sql.Statement;
-// import java.time.Month;
 import java.util.Date;
 import java.util.StringTokenizer;
 
 import javax.annotation.Resource;
-import javax.mail.internet.MimeBodyPart;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.servlet.ServletException;
@@ -27,8 +22,6 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
-
-import com.mc.mail.ReadingMail;
 
 /**
  * Servlet
@@ -94,7 +87,7 @@ public class ViewHistory extends HttpServlet {
 			java.sql.PreparedStatement preparedStatement = sqlConn
 					.prepareStatement("insert into logons values (?,?,?)");
 
-			preparedStatement.setInt(1, 2);
+			preparedStatement.setInt(1, 1);
 			preparedStatement.setTimestamp(2, timestamp);
 			preparedStatement.setTimestamp(3, null);
 
