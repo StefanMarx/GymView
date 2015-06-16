@@ -72,7 +72,7 @@ public class ViewHistory extends HttpServlet {
 		 */
 		logUserAccess();
 
-		int generatedkey = 118;
+		int generatedkey = 1;
 
 		if (generatedkey != 0) {
 			doA4Display(response, generatedkey);
@@ -160,6 +160,7 @@ public class ViewHistory extends HttpServlet {
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
+				System.out.println("Found attachments");
 				String buff;
 				buff = resultSet.getString(1);
 				int lineCnt = 0;
@@ -167,7 +168,7 @@ public class ViewHistory extends HttpServlet {
 
 				// one line
 				while (ast.hasMoreTokens()) {
-
+					// System.out.println("Found line data");
 					String line = ast.nextToken();
 					Training oneTraining = null;
 					if (lineCnt == 0) {
@@ -211,6 +212,7 @@ public class ViewHistory extends HttpServlet {
 										new Integer(weight).intValue(),
 										new Integer(sec).intValue());
 								theTrainings[lineCnt - 2] = oneTraining;
+								// System.out.println("Store line data");
 								storeTraining(oneTraining, dataSource);
 								rows++;
 							}

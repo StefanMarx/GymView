@@ -1,6 +1,5 @@
 package com.mc.mail;
 
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -27,17 +26,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 /**
- * Servlet implementation class ReadingMail
- * Reading Kieser data from googlemail
+ * Servlet implementation class ReadingMail Reading Kieser data from googlemail
  */
 @WebServlet("/ReadingMail")
 public class ReadingMail extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private String saveDirectory ="/Users/stefan/work/techno/GymView";
-    
-	private MimeBodyPart mailAttachment ;
-	
-    public MimeBodyPart getMailAttachment() {
+	private String saveDirectory = "/Users/stefan/work/techno/GymView";
+
+	private MimeBodyPart mailAttachment;
+
+	public MimeBodyPart getMailAttachment() {
 		return mailAttachment;
 	}
 
@@ -46,119 +44,131 @@ public class ReadingMail extends HttpServlet {
 	}
 
 	/**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ReadingMail() {
-        super();
-    }
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public ReadingMail() {
+		super();
+	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		// readMail();
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		// if run as a servlet
 	}
 
 	/**
-	 * Read mail from gmail server and store attachment data in a file in the filesystem
-	 * @param dataSource open database connection 
+	 * Read mail from gmail server and store attachment data in a file in the
+	 * filesystem
+	 * 
+	 * @param dataSource
+	 *            open database connection
 	 * @return user key of generated user training records in database
 	 */
-	protected int readMail(DataSource dataSource){
+	protected int readMail(DataSource dataSource) {
 		int userId = -1;
 		Properties props = new Properties();
-        props.setProperty("mail.store.protocol", "imaps");
-        try {
-            Session session = Session.getInstance(props, null);
-            Store store = session.getStore();
-            store.connect("imap.gmail.com", "stefankmarx@gmail.com", "blue24go");
-            Folder inbox = store.getFolder("INBOX");
-            inbox.open(Folder.READ_WRITE);
-            Message[] arrayMessages = inbox.getMessages();
-            for (int i = 0; i < arrayMessages.length; i++) {
-                Message message = arrayMessages[i];
-                Address[] fromAddress = message.getFrom();
-                String from = fromAddress[0].toString();
-                String subject = message.getSubject();
-                String sentDate = message.getSentDate().toString();
- 
-                String contentType = message.getContentType();
-                String messageContent = "";
- 
-                // store attachment file name, separated by comma
-                String attachFiles = "";
-            
-            if (contentType.contains("multipart")) {
-                // content may contain attachments
-                Multipart multiPart = (Multipart) message.getContent();
-                int numberOfParts = multiPart.getCount();
-                System.out.println("Found " + numberOfParts + " numbers of attachments."); 
-                for (int partCount = 0; partCount < numberOfParts; partCount++) {
-                    MimeBodyPart part = (MimeBodyPart) multiPart.getBodyPart(partCount);
-                    if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {
-                        // this part is attachment
-                    	setMailAttachment(part);
-                        String fileName = part.getFileName();
-                        attachFiles += fileName + ", ";
-                        System.out.println("Lines in part " + part.getSize());
+		props.setProperty("mail.store.protocol", "imaps");
+		try {
+			Session session = Session.getInstance(props, null);
+			Store store = session.getStore();
+			store.connect("imap.gmail.com", "stefankmarx@gmail.com", "blue24go");
+			Folder inbox = store.getFolder("INBOX");
+			inbox.open(Folder.READ_WRITE);
+			Message[] arrayMessages = inbox.getMessages();
+			for (int i = 0; i < arrayMessages.length; i++) {
+				Message message = arrayMessages[i];
+				Address[] fromAddress = message.getFrom();
+				String from = fromAddress[0].toString();
+				String subject = message.getSubject();
+				String sentDate = message.getSentDate().toString();
 
-                        part.saveFile(saveDirectory + File.separator + fileName);
-                    } else {
-                        // this part may be the message content
-                        messageContent = part.getContent().toString();
-                    }
-                }
+				String contentType = message.getContentType();
+				String messageContent = "";
 
-                if (attachFiles.length() > 1) {
-                    attachFiles = attachFiles.substring(0, attachFiles.length() - 2);
-                }
-            } else if (contentType.contains("text/plain")
-                    || contentType.contains("text/html")) {
-                Object content = message.getContent();
-                if (content != null) {
-                    messageContent = content.toString();
-                }
-            }
+				// store attachment file name, separated by comma
+				String attachFiles = "";
 
-            for (int j = 0; j < arrayMessages.length; j++) {
-                Message imessage = arrayMessages[j];
-                imessage.setFlag(Flags.Flag.DELETED, true);
-            }
-            // inbox.close(true);
-            
-            // print out details of each message
-            System.out.println("Message #" + (i + 1) + ":");
-            System.out.println("\t From: " + from);
-            // compute user id from from and users table
-            userId = usergetUserIdFormSender(from, dataSource);
-            System.out.println("\t Subject: " + subject);
-            System.out.println("\t Sent Date: " + sentDate);
-            System.out.println("\t Message: " + messageContent);
-            System.out.println("\t Attachments: " + attachFiles);
-            }
-        } catch (Exception mex) {
-            // mex.printStackTrace();
-        	System.out.println("Can't connect to mail store, no net access!");
-        }
-        return userId;
+				if (contentType.contains("multipart")) {
+					// content may contain attachments
+					Multipart multiPart = (Multipart) message.getContent();
+					int numberOfParts = multiPart.getCount();
+					System.out.println("Found " + numberOfParts
+							+ " numbers of attachments.");
+					for (int partCount = 0; partCount < numberOfParts; partCount++) {
+						MimeBodyPart part = (MimeBodyPart) multiPart
+								.getBodyPart(partCount);
+						if (Part.ATTACHMENT.equalsIgnoreCase(part
+								.getDisposition())) {
+							// this part is attachment
+							setMailAttachment(part);
+							String fileName = part.getFileName();
+							attachFiles += fileName + ", ";
+							System.out.println("Lines in part "
+									+ part.getSize());
+
+							part.saveFile(saveDirectory + File.separator
+									+ fileName);
+						} else {
+							// this part may be the message content
+							messageContent = part.getContent().toString();
+						}
+					}
+
+					if (attachFiles.length() > 1) {
+						attachFiles = attachFiles.substring(0,
+								attachFiles.length() - 2);
+					}
+				} else if (contentType.contains("text/plain")
+						|| contentType.contains("text/html")) {
+					Object content = message.getContent();
+					if (content != null) {
+						messageContent = content.toString();
+					}
+				}
+
+				for (int j = 0; j < arrayMessages.length; j++) {
+					Message imessage = arrayMessages[j];
+					imessage.setFlag(Flags.Flag.DELETED, true);
+				}
+				// inbox.close(true);
+
+				// print out details of each message
+				System.out.println("Message #" + (i + 1) + ":");
+				System.out.println("\t From: " + from);
+				// compute user id from from and users table
+				userId = usergetUserIdFormSender(from, dataSource);
+				System.out.println("\t Subject: " + subject);
+				System.out.println("\t Sent Date: " + sentDate);
+				System.out.println("\t Message: " + messageContent);
+				System.out.println("\t Attachments: " + attachFiles);
+			}
+		} catch (Exception mex) {
+			mex.printStackTrace();
+			System.out.println("Can't connect to mail store, no net access!");
+		}
+		return userId;
 	}
 
 	private int usergetUserIdFormSender(String from, DataSource dataSource) {
 		int userUid = -1;
 		try (java.sql.Connection sqlConn = dataSource.getConnection();) {
-			
+
 			java.sql.PreparedStatement selectUI = sqlConn
-					.prepareStatement(
-							"select user_id from users where mail = ?");
+					.prepareStatement("select user_id from users where mail = ?");
 			final String mailadr = getMailAddress(from);
-			selectUI.setString(1,mailadr);
+			selectUI.setString(1, mailadr);
 
 			selectUI.execute();
 
@@ -176,25 +186,26 @@ public class ReadingMail extends HttpServlet {
 	}
 
 	private String getMailAddress(String from) {
-		//  From: Stefan Marx <Stefan.Marx@marx-consulting.com>
+		// From: Stefan Marx <Stefan.Marx@marx-consulting.com>
 		String buff = from.substring(from.indexOf("<"));
-		return buff.substring(1, buff.length()-1).toLowerCase();
+		return buff.substring(1, buff.length() - 1).toLowerCase();
 	}
-	
-    public void saveAttachement(DataSource dataSource, MimeBodyPart part){
-    	int generatedkey;
-    	System.out.println("Starting saveAttachments ..");
-    	System.out.println("Going to mysql ... " + new Date());
+
+	public void saveAttachement(DataSource dataSource, MimeBodyPart part, int userId) {
+		int generatedkey;
+		System.out.println("Starting saveAttachments ..");
+		System.out.println("Going to mysql ... " + new Date());
 		try (java.sql.Connection sqlConn = dataSource.getConnection();) {
 			java.sql.PreparedStatement insertStatement = sqlConn
 					.prepareStatement(
-							"insert into attachments (insertdate, org_attachment) values ( ?, ?)",
+							"insert into attachments (insertdate, user_id, org_attachment) values ( ?, ?, ?)",
 							Statement.RETURN_GENERATED_KEYS);
 
 			long time = System.currentTimeMillis();
 			java.sql.Timestamp timestamp = new java.sql.Timestamp(time);
 			insertStatement.setTimestamp(1, timestamp);
-			
+			insertStatement.setInt(2, userId);
+
 			if (part != null) {
 				com.sun.mail.imap.IMAPInputStream theStream = (com.sun.mail.imap.IMAPInputStream) part
 						.getContent();
@@ -211,9 +222,9 @@ public class ReadingMail extends HttpServlet {
 				while ((c = is.read()) != -1) {
 					buff.append((char) (c));
 				}
-				insertStatement.setString(2, buff.toString());
+				insertStatement.setString(3, buff.toString());
 			} else {
-				insertStatement.setString(2, "ERROR: no attachments found!");
+				insertStatement.setString(3, "ERROR: no attachments found!");
 			}
 
 			insertStatement.executeUpdate();
@@ -228,7 +239,7 @@ public class ReadingMail extends HttpServlet {
 			e.printStackTrace();
 		}
 
-    }
+	}
 
 	@Override
 	public void init() throws ServletException {

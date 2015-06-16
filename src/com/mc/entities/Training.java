@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class Training {
 
-	final static int ALL_TRAININGS = 181;
+	final static int ALL_TRAININGS = 197;
 	final static int ALL_NAMES = 13;
 	
 	private String machineName;

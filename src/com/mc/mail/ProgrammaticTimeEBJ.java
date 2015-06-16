@@ -39,7 +39,7 @@ public class ProgrammaticTimeEBJ {
     }
 	
 	// @SuppressWarnings("unused")
-	@Schedule(second="*/6000", minute="*", hour="8-23", dayOfWeek="Mon-Sun",
+	@Schedule(second="*/6000000", minute="*", hour="8-23", dayOfWeek="Mon-Sun",
       dayOfMonth="*", month="*", year="*", info="MyTimer")
     private void scheduledTimeout(final Timer t) throws ServletException {
         // System.out.println("@Schedule called at: " + new java.util.Date());
@@ -52,7 +52,7 @@ public class ProgrammaticTimeEBJ {
 		if ( part != null){
 			try {
 				System.out.println("Found part in schedule " + part.getSize());
-				readmail.saveAttachement(dataSource, part);
+				readmail.saveAttachement(dataSource, part, userIdFromMail);
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
