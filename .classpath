@@ -38,6 +38,6 @@
 	<classpathentry kind="lib" path="/Users/stefan/work/techno/wildfly-8.2.0.Final/modules/system/layers/base/org/jboss/xnio/nio/main/xnio-nio-3.3.0.Final.jar"/>
 	<classpathentry kind="lib" path="/Users/stefan/work/techno/wildfly-8.2.0.Final/modules/system/layers/base/org/jboss/sasl/main/jboss-sasl-1.0.4.Final.jar"/>
 	<classpathentry kind="lib" path="/Users/stefan/work/techno/wildfly-8.2.0.Final/modules/system/layers/base/org/jboss/marshalling/river/main/jboss-marshalling-river-1.4.9.Final.jar"/>
-	<classpathentry kind="lib" path="WebContent/lib/mysql-connector-java-5.1.34-bin.jar"/>
+	<classpathentry kind="lib" path="/Users/stefan/work/techno/GymView/jdbcconn/mysql-connector-java-5.1.35/mysql-connector-java-5.1.35-bin.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

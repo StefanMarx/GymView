@@ -39,7 +39,7 @@ public class ProgrammaticTimeEBJ {
     }
 	
 	// @SuppressWarnings("unused")
-	@Schedule(second="*/6000000", minute="*", hour="8-23", dayOfWeek="Mon-Sun",
+	@Schedule(second="*/60", minute="*", hour="8-23", dayOfWeek="Mon-Sun",
       dayOfMonth="*", month="*", year="*", info="MyTimer")
     private void scheduledTimeout(final Timer t) throws ServletException {
         // System.out.println("@Schedule called at: " + new java.util.Date());
