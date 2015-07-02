@@ -37,9 +37,9 @@ public class ViewHistory extends HttpServlet {
 	private java.util.Date myDate;
 
 	final String mailId = "stefan.marx@marx-consulting.com";
-	private int userIdFromMail = 0;
+	private static int userIdFromMail = 0;
 
-	public int getUserIdFromMail() {
+	public static int getUserIdFromMail() {
 		return userIdFromMail;
 	}
 
@@ -93,6 +93,7 @@ public class ViewHistory extends HttpServlet {
 
 			preparedStatement.executeUpdate();
 		} catch (Exception e) {
+			System.out.println("DS: " + dataSource);
 			e.printStackTrace();
 		}
 	}
@@ -229,7 +230,7 @@ public class ViewHistory extends HttpServlet {
 		return theTrainings;
 	}
 
-	private void storeTraining(Training oneTraining, DataSource dataSource2) {
+	public void storeTraining(Training oneTraining, DataSource dataSource2) {
 		/* 
 		   TRAINIG_ID   | int(11)     | NO   | PRI | NULL    | auto_increment |
 		 | USER_ID      | int(11)     | NO   |     | NULL    |                |

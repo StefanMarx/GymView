@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/1.8.0_05">
-		<attributes>
-			<attribute name="owner.project.facets" value="java"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.jboss.ide.eclipse.as.core.server.runtime.runtimeTarget/WildFly 8.x Runtime">
 		<attributes>
 			<attribute name="owner.project.facets" value="jst.web;jpt.jpa"/>
@@ -39,5 +34,10 @@
 	<classpathentry kind="lib" path="/Users/stefan/work/techno/wildfly-8.2.0.Final/modules/system/layers/base/org/jboss/sasl/main/jboss-sasl-1.0.4.Final.jar"/>
 	<classpathentry kind="lib" path="/Users/stefan/work/techno/wildfly-8.2.0.Final/modules/system/layers/base/org/jboss/marshalling/river/main/jboss-marshalling-river-1.4.9.Final.jar"/>
 	<classpathentry kind="lib" path="/Users/stefan/work/techno/GymView/jdbcconn/mysql-connector-java-5.1.35/mysql-connector-java-5.1.35-bin.jar"/>
+	<classpathentry kind="lib" path="/Users/stefan/work/techno/wildfly-8.2.0.Final/modules/system/layers/base/javax/servlet/api/main/jboss-servlet-api_3.1_spec-1.0.0.Final.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="/Users/stefan/work/techno/wildfly-8.2.0.Final/modules/system/layers/base/javax/mail/api/main/javax.mail-1.5.1.jar"/>
+	<classpathentry kind="lib" path="/Users/stefan/work/techno/wildfly-8.2.0.Final/modules/system/layers/base/javax/persistence/api/main/hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="/Users/stefan/work/techno/GymView/software/itext/itextpdf-5.5.6.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
